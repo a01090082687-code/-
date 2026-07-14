@@ -84,20 +84,38 @@
   }
   .card-desc{font-size:13px;color:var(--muted);margin:0 0 18px;}
 
-  .hint{font-size:12px;color:var(--muted-2);margin-top:6px;}
-  .hint.warn{color:var(--warning);font-weight:600;}
-
-  input[type=text], input[type=number]{
-    padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);
+  /* ---------- Form fields ---------- */
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  .field-row.thirds{grid-template-columns:1fr 1fr 1fr;}
+  @media (max-width:560px){
+    .field-row, .field-row.thirds{grid-template-columns:1fr;}
+  }
+  .field label{
+    display:block;font-size:12.5px;font-weight:700;color:var(--muted);margin-bottom:6px;
+  }
+  .field label .req{color:var(--danger);margin-left:2px;}
+  select, input[type=text], input[type=number]{
+    width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);
     font-size:15px;font-family:inherit;color:var(--text);background:#fbfcfe;
     transition:border-color .15s, box-shadow .15s;
   }
-  input:focus{
+  select:focus, input:focus{
     outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(29,95,174,0.13);
     background:#fff;
   }
+  select:disabled{color:var(--muted-2);background:#f1f4f8;cursor:not-allowed;}
+  .hint{font-size:12px;color:var(--muted-2);margin-top:6px;}
+  .hint.warn{color:var(--warning);font-weight:600;}
+  .unit-input{position:relative;}
+  .unit-input input{padding-right:40px;}
+  .unit-input .unit{
+    position:absolute;right:14px;top:50%;transform:translateY(-50%);
+    font-size:14px;color:var(--muted);font-weight:600;pointer-events:none;
+  }
 
-  /* ---------- Buttons ---------- */
+  /* ---------- Weather fetch row ---------- */
+  .weather-row{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+  .weather-row input{flex:1;min-width:160px;}
   .btn{
     border:none;border-radius:12px;padding:12px 18px;font-size:14px;font-weight:700;
     cursor:pointer;transition:transform .08s, background .15s, box-shadow .15s;
@@ -112,131 +130,97 @@
   .btn-outline:hover{background:#f7f9fb;}
   .btn-danger-outline{background:#fff;color:var(--danger);border:1.5px solid var(--danger-line);}
   .btn-danger-outline:hover{background:var(--danger-bg);}
-  .btn:disabled{opacity:.45;cursor:not-allowed;}
+  .btn:disabled{opacity:.55;cursor:not-allowed;}
+  .btn-block{width:100%;}
   .btn-lg{padding:15px 20px;font-size:15.5px;}
 
-  .status-line{font-size:12.5px;color:var(--muted);margin-top:8px;min-height:16px;}
+  .status-line{font-size:12.5px;color:var(--muted);margin-top:2px;min-height:16px;}
   .status-line.error{color:var(--danger);font-weight:600;}
   .status-line.ok{color:#1f8a4c;font-weight:600;}
 
-  /* ---------- 1. 측정자 ---------- */
-  .writer-bar{
-    display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
-    background:#f4f7fb;border:1.5px solid var(--line);border-radius:14px;padding:16px 18px;
+  /* ---------- Result hero ---------- */
+  .result-card{
+    background:linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
   }
-  .writer-bar.locked{background:var(--interest-bg);border-color:var(--interest-line);}
-  .writer-name-display{font-size:15.5px;font-weight:800;color:var(--navy);display:flex;align-items:center;gap:8px;}
-  .writer-edit-row{display:flex;gap:10px;flex:1;min-width:240px;}
-  .writer-edit-row input{flex:1;width:100%;}
-
-  /* ---------- 2. 날씨 불러오기 ---------- */
-  .weather-row{display:flex;gap:10px;margin-bottom:0;flex-wrap:wrap;}
-  .weather-row input{flex:1;min-width:160px;width:100%;}
-  .weather-apply-row{display:none;margin-top:10px;}
-  .weather-apply-row.show{display:flex;}
-  .weather-apply-row .btn{font-size:13px;padding:10px 14px;}
-
-  /* ---------- 공장 탭 ---------- */
-  .plant-tabs{display:flex;gap:8px;margin:22px 0 16px;flex-wrap:wrap;}
-  .plant-tab{
-    padding:11px 20px;border-radius:12px;border:1.5px solid var(--line);background:#fff;
-    font-size:14.5px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .15s;
-    font-family:inherit;
+  .result-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;}
+  .felt-label{font-size:13px;font-weight:700;color:var(--muted);margin:0 0 2px;}
+  .felt-number{
+    font-size:64px;font-weight:800;line-height:1;letter-spacing:-0.02em;
+    font-variant-numeric:tabular-nums;margin:6px 0 0;
+    color:var(--text);
   }
-  .plant-tab:hover{border-color:#cfe0f4;color:var(--primary-dark);}
-  .plant-tab.active{background:var(--primary);border-color:var(--primary);color:#fff;box-shadow:0 4px 14px -4px rgba(29,95,174,.5);}
-
-  /* ---------- 부서 행 ---------- */
-  .dept-panel{display:none;}
-  .dept-panel.active{display:block;}
-
-  .dept-row{
-    display:flex;align-items:center;gap:12px;flex-wrap:wrap;
-    padding:13px 14px;border:1.5px solid var(--line);border-radius:14px;margin-bottom:10px;
-    background:#fff;transition:border-color .15s, background .15s;
+  .felt-number .deg{font-size:34px;font-weight:700;color:var(--muted);margin-left:2px;}
+  .felt-number.placeholder{color:var(--muted-2);}
+  .chips{display:flex;gap:10px;flex-wrap:wrap;}
+  .chip{
+    background:#f4f7fb;border:1px solid var(--line);border-radius:12px;
+    padding:10px 14px;text-align:center;min-width:88px;
   }
-  .dept-row.filled{border-color:#cfe0f4;}
-  .dept-row.stage-caution{border-color:var(--caution-line);background:var(--caution-bg);}
-  .dept-row.stage-warning{border-color:var(--warning-line);background:var(--warning-bg);}
-  .dept-row.stage-danger{border-color:var(--danger-line);background:var(--danger-bg);}
+  .chip .chip-label{font-size:11px;color:var(--muted);font-weight:700;}
+  .chip .chip-value{font-size:17px;font-weight:800;margin-top:2px;}
 
-  .dept-name{width:56px;flex:none;font-size:14.5px;font-weight:800;color:var(--navy);}
-
-  .row-inputs{display:flex;gap:8px;flex:none;}
-  .row-field{position:relative;width:96px;}
-  .row-field input{width:100%;padding:9px 32px 9px 10px;border-radius:10px;border:1.5px solid var(--line);font-size:14.5px;font-family:inherit;background:#fbfcfe;}
-  .row-field input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(29,95,174,.13);background:#fff;}
-  .row-field .unit{position:absolute;right:9px;top:50%;transform:translateY(-50%);font-size:11.5px;color:var(--muted);font-weight:700;pointer-events:none;}
-
-  .row-result{min-width:130px;flex:none;font-size:13px;}
-  .rr-felt{font-weight:800;font-size:15.5px;}
-  .rr-empty{color:var(--muted-2);font-weight:600;font-size:13px;}
-
-  .stage-tag{display:inline-block;padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:800;margin-left:4px;}
-  .stage-tag.interest{background:var(--interest-bg);color:var(--interest);}
-  .stage-tag.caution{background:var(--caution-bg);color:var(--caution);}
-  .stage-tag.warning{background:var(--warning-bg);color:var(--warning);}
-  .stage-tag.danger{background:var(--danger-bg);color:var(--danger);}
-
-  .row-action{flex:1 1 100%;display:none;margin-top:6px;padding-top:12px;border-top:1px dashed var(--line);}
-  .dept-row.show-action .row-action{display:block;}
-  .row-action-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-
-  .action-chip-default{
-    display:inline-flex;align-items:center;gap:6px;background:#fff;border:1.5px solid var(--primary);
-    border-radius:999px;padding:6px 12px 6px 10px;font-size:12.5px;font-weight:700;color:var(--primary-dark);cursor:pointer;
+  /* gauge */
+  .gauge-wrap{margin-top:22px;}
+  .gauge-track{
+    position:relative;height:14px;border-radius:999px;
+    background:linear-gradient(to right,
+      var(--interest) 0%, var(--interest) 44%,
+      var(--caution) 44%, var(--caution) 52%,
+      var(--warning) 52%, var(--warning) 72%,
+      var(--danger) 72%, var(--danger) 100%);
+    box-shadow:inset 0 1px 2px rgba(0,0,0,0.08);
   }
-  .action-chip-default input{width:15px;height:15px;accent-color:var(--primary);cursor:pointer;}
-  .action-chip-default.off{border-color:var(--line);color:var(--muted-2);background:#f4f7fb;}
-  .auto-badge{font-size:10px;font-weight:800;color:var(--primary);background:var(--interest-bg);padding:2px 6px;border-radius:5px;}
-  .action-chip-default.off .auto-badge{color:var(--muted-2);background:#eceff3;}
-
-  .more-actions-btn{
-    background:none;border:none;color:var(--muted);font-size:12.5px;font-weight:700;cursor:pointer;
-    text-decoration:underline;padding:4px 2px;font-family:inherit;
+  .gauge-pointer{
+    position:absolute;top:-7px;width:4px;height:28px;border-radius:3px;
+    background:var(--navy);left:0%;
+    transform:translateX(-50%);
+    transition:left .25s ease;
+    box-shadow:0 1px 3px rgba(0,0,0,0.3);
   }
-
-  .extra-actions-panel{margin-top:10px;display:flex;flex-direction:column;gap:6px;}
-  .extra-actions-panel.hidden{display:none;}
-  .extra-action-item{display:flex;align-items:flex-start;gap:8px;font-size:13px;padding:8px 10px;border:1px solid var(--line);border-radius:9px;cursor:pointer;background:#fff;}
-  .extra-action-item:hover{border-color:#cfe0f4;}
-  .extra-action-item input{margin-top:2px;width:15px;height:15px;accent-color:var(--primary);flex:none;cursor:pointer;}
-  .extra-action-item.checked{border-color:var(--primary);background:#eef5fd;}
-  .badge-required{
-    display:inline-block;background:var(--danger);color:#fff;font-size:10.5px;font-weight:800;
-    padding:2px 6px;border-radius:5px;margin-right:6px;vertical-align:1px;
+  .gauge-pointer::after{
+    content:'';position:absolute;top:-6px;left:50%;transform:translateX(-50%);
+    width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;
+    border-top:6px solid var(--navy);
   }
-  .row-note-field{margin-top:8px;}
-  .row-note-field input{width:100%;padding:9px 12px;border-radius:9px;border:1.5px solid var(--line);font-size:13px;font-family:inherit;background:#fbfcfe;}
+  .gauge-ticks{display:flex;justify-content:space-between;margin-top:8px;font-size:11px;color:var(--muted-2);font-weight:600;}
 
-  .panel-savebar{
-    display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
-    margin-top:18px;padding-top:18px;border-top:1.5px solid var(--line);
+  /* banner */
+  .banner{
+    margin-top:22px;border-radius:14px;padding:14px 16px;font-size:14.5px;font-weight:700;
+    display:flex;align-items:center;gap:10px;border:1px solid transparent;
   }
-  .save-info{font-size:13px;color:var(--muted);font-weight:600;}
-  .save-info strong{color:var(--primary-dark);}
-  .savebar-btns{display:flex;gap:8px;}
+  .banner .dot{width:9px;height:9px;border-radius:50%;flex:none;}
+  .banner.stage-interest{background:var(--interest-bg);color:#1c4a8a;border-color:var(--interest-line);}
+  .banner.stage-interest .dot{background:var(--interest);}
+  .banner.stage-caution{background:var(--caution-bg);color:#8a6103;border-color:var(--caution-line);}
+  .banner.stage-caution .dot{background:var(--caution);}
+  .banner.stage-warning{background:var(--warning-bg);color:#9c4211;border-color:var(--warning-line);}
+  .banner.stage-warning .dot{background:var(--warning);}
+  .banner.stage-danger{background:var(--danger-bg);color:#9c2222;border-color:var(--danger-line);}
+  .banner.stage-danger .dot{background:var(--danger);}
+  .banner.stage-empty{background:#f4f7fb;color:var(--muted);border-color:var(--line);font-weight:600;}
 
-  @media (max-width:640px){
-    .dept-row{padding:12px;}
-    .dept-name{width:100%;order:1;margin-bottom:2px;}
-    .row-inputs{flex:1;order:2;}
-    .row-field{width:auto;flex:1;}
-    .row-result{width:100%;order:3;margin-top:4px;}
-  }
-
-  /* ---------- 참고 정보 ---------- */
-  .stage-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+  /* stage reference grid */
+  .stage-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px;}
   @media (max-width:560px){.stage-grid{grid-template-columns:1fr 1fr;}}
-  .stage-box{border-radius:12px;padding:12px;border:1.5px solid var(--line);background:#f9fafc;}
+  .stage-box{
+    border-radius:12px;padding:12px;border:1.5px solid var(--line);background:#f9fafc;
+    transition:box-shadow .15s, transform .15s;
+  }
   .stage-box .s-title{font-size:13.5px;font-weight:800;margin:0;}
   .stage-box .s-range{font-size:11.5px;color:var(--muted);margin:2px 0 6px;font-weight:600;}
   .stage-box .s-desc{font-size:11.5px;color:var(--muted);line-height:1.4;}
-  .stage-box.interest{border-color:var(--interest-line);background:var(--interest-bg);}
-  .stage-box.caution{border-color:var(--caution-line);background:var(--caution-bg);}
-  .stage-box.warning{border-color:var(--warning-line);background:var(--warning-bg);}
-  .stage-box.danger{border-color:var(--danger-line);background:var(--danger-bg);}
+  .stage-box.active{box-shadow:0 4px 16px -4px rgba(15,45,77,0.25);transform:translateY(-2px);}
+  .stage-box.interest{border-color:var(--interest-line);}
+  .stage-box.interest.active{background:var(--interest-bg);}
+  .stage-box.caution{border-color:var(--caution-line);}
+  .stage-box.caution.active{background:var(--caution-bg);}
+  .stage-box.warning{border-color:var(--warning-line);}
+  .stage-box.warning.active{background:var(--warning-bg);}
+  .stage-box.danger{border-color:var(--danger-line);}
+  .stage-box.danger.active{background:var(--danger-bg);}
 
+  /* reference table toggle */
   .toggle-btn{
     display:flex;align-items:center;justify-content:space-between;width:100%;
     background:none;border:none;cursor:pointer;padding:0;font-family:inherit;
@@ -251,6 +235,43 @@
     border:1px solid var(--line);padding:6px 8px;text-align:center;white-space:nowrap;
   }
   table.ref th{background:#f4f7fb;font-weight:700;color:var(--muted);}
+  table.ref td.self{outline:2px solid var(--primary);outline-offset:-2px;font-weight:800;}
+
+  /* ---------- Action checklist card ---------- */
+  .action-card{
+    border:1.5px solid var(--warning-line);
+    background:linear-gradient(180deg,#fffaf5,#ffffff 40%);
+    display:none;
+  }
+  .action-card.show{display:block;}
+  .action-alert{
+    background:var(--warning-bg);color:#9c4211;border:1px solid var(--warning-line);
+    border-radius:12px;padding:12px 14px;font-size:13.5px;font-weight:700;margin-bottom:16px;
+  }
+  .action-list{display:flex;flex-direction:column;gap:8px;}
+  .action-item{
+    display:flex;align-items:flex-start;gap:10px;border:1.5px solid var(--line);
+    border-radius:12px;padding:12px 14px;cursor:pointer;transition:border-color .15s, background .15s;
+    background:#fff;
+  }
+  .action-item:hover{border-color:#cfe0f4;background:#f9fbfd;}
+  .action-item input{width:18px;height:18px;margin-top:1px;accent-color:var(--primary);flex:none;cursor:pointer;}
+  .action-item.checked{border-color:var(--primary);background:#eef5fd;}
+  .action-item .a-text{font-size:14px;line-height:1.4;}
+  .badge-required{
+    display:inline-block;background:var(--danger);color:#fff;font-size:10.5px;font-weight:800;
+    padding:2px 6px;border-radius:5px;margin-right:6px;vertical-align:1px;
+  }
+  .note-field{margin-top:16px;}
+  .note-field textarea{
+    width:100%;min-height:70px;border-radius:12px;border:1.5px solid var(--line);
+    padding:12px 14px;font-family:inherit;font-size:14px;resize:vertical;background:#fbfcfe;
+  }
+  .note-field textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(29,95,174,0.13);}
+
+  /* ---------- Save row ---------- */
+  .save-row{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap;}
+  .save-row .btn{flex:1;min-width:160px;}
 
   /* ---------- Records ---------- */
   .records-head{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:16px;}
@@ -264,6 +285,13 @@
   table.log td{padding:10px;border-bottom:1px solid var(--line);vertical-align:top;}
   table.log tr:last-child td{border-bottom:none;}
   table.log tr:hover td{background:#f9fbfd;}
+  .stage-tag{
+    display:inline-block;padding:3px 9px;border-radius:999px;font-size:11.5px;font-weight:800;
+  }
+  .stage-tag.interest{background:var(--interest-bg);color:var(--interest);}
+  .stage-tag.caution{background:var(--caution-bg);color:var(--caution);}
+  .stage-tag.warning{background:var(--warning-bg);color:var(--warning);}
+  .stage-tag.danger{background:var(--danger-bg);color:var(--danger);}
   .cell-muted{color:var(--muted-2);font-size:12.5px;}
   .row-del{background:none;border:none;color:var(--muted-2);cursor:pointer;font-size:16px;padding:2px 6px;border-radius:6px;}
   .row-del:hover{background:var(--danger-bg);color:var(--danger);}
@@ -282,7 +310,7 @@
     position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
     background:var(--navy);color:#fff;padding:12px 22px;border-radius:999px;font-size:13.5px;font-weight:700;
     box-shadow:0 10px 30px rgba(0,0,0,0.25);opacity:0;pointer-events:none;
-    transition:opacity .25s, transform .25s;z-index:50;max-width:88vw;text-align:center;
+    transition:opacity .25s, transform .25s;z-index:50;
   }
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
@@ -296,7 +324,7 @@
     <div>
       <p class="brand-eyebrow">GUYOUNGTECH · 안전보건팀</p>
       <h1 class="brand-title">🌡️ 체감온도 계산기</h1>
-      <p class="brand-sub">기상청 · 안전보건공단(KOSHA) 공식 체감온도 산출식 기반 · 공장별 일괄 입력</p>
+      <p class="brand-sub">기상청 · 안전보건공단(KOSHA) 공식 체감온도 산출식 기반 · 부서별 폭염 조치 기록</p>
     </div>
     <span class="kosha-pill">KOSHA 산출식 기준</span>
   </div>
@@ -304,84 +332,164 @@
 
 <div class="wrap">
 
-  <!-- 1. 측정자 (최초 1회) -->
+  <!-- 1. 실시간 날씨 (선택) -->
   <div class="card">
-    <p class="card-title"><span class="num">1</span> 측정자 등록 <span style="font-weight:500;color:var(--muted-2);font-size:12.5px;">(최초 1회만 입력 · 이후 자동 적용)</span></p>
-    <div class="writer-bar" id="writerBar"></div>
-  </div>
-
-  <!-- 2. 공장별 기온·습도 입력 -->
-  <div class="card">
-    <p class="card-title"><span class="num">2</span> 공장별 기온 · 습도 입력</p>
-    <p class="card-desc">공장을 클릭하면 해당 공장의 전체 부서가 아래에 나열됩니다. 부서마다 기온·습도만 입력하면 체감온도가 자동 계산되고, 31°C 이상이면 조치사항이 자동 표시됩니다.</p>
-
+    <p class="card-title"><span class="num">1</span> 실시간 날씨 불러오기 <span style="font-weight:500;color:var(--muted-2);font-size:12.5px;">(선택 · 없어도 아래에서 직접 입력 가능)</span></p>
+    <p class="card-desc">현재 위치 또는 지역명으로 실시간 기온·습도를 자동으로 불러옵니다.</p>
     <div class="weather-row">
-      <input type="text" id="cityInput" placeholder="지역명 검색 (예: 영천, 경산, 대구)">
+      <input type="text" id="cityInput" placeholder="지역명 입력 (예: 영천, 경산, 대구)">
       <button class="btn btn-ghost" id="citySearchBtn" type="button">🔍 검색</button>
       <button class="btn btn-outline" id="myLocBtn" type="button">📍 내 위치 날씨</button>
     </div>
     <div class="status-line" id="weatherStatus">날씨 출처: Open-Meteo.com</div>
-    <div class="weather-apply-row" id="weatherApplyRow">
-      <button class="btn btn-primary" id="weatherApplyBtn" type="button">↳ 현재 탭 빈 칸에 일괄 적용</button>
-    </div>
-
-    <div class="plant-tabs" id="plantTabs">
-      <button class="plant-tab active" data-plant="영천공장" type="button">영천공장</button>
-      <button class="plant-tab" data-plant="1공장" type="button">1공장</button>
-      <button class="plant-tab" data-plant="2공장" type="button">2공장</button>
-    </div>
-
-    <div id="deptPanels"></div>
-
-    <div class="panel-savebar">
-      <div class="save-info" id="panelSaveInfo"></div>
-      <div class="savebar-btns">
-        <button class="btn btn-outline" id="panelResetBtn" type="button">현재 탭 초기화</button>
-        <button class="btn btn-primary btn-lg" id="panelSaveBtn" type="button">✓ 전체 저장</button>
-      </div>
-    </div>
-    <p class="status-line error" id="saveError" style="text-align:right;"></p>
   </div>
 
-  <!-- 3. 참고 정보 -->
+  <!-- 2. 구분 선택 -->
   <div class="card">
-    <p class="card-title"><span class="num">3</span> 참고 정보</p>
-    <p class="card-desc">체감온도 단계 기준입니다.</p>
+    <p class="card-title"><span class="num">2</span> 공장 · 부서 선택</p>
+    <p class="card-desc">측정 위치를 선택하세요. 부서 목록은 공장 선택에 따라 자동으로 바뀝니다.</p>
+    <div class="field-row thirds">
+      <div class="field">
+        <label>공장 <span class="req">*</span></label>
+        <select id="plantSelect">
+          <option value="">선택하세요</option>
+          <option value="영천공장">영천공장</option>
+          <option value="1공장">1공장</option>
+          <option value="2공장">2공장</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>부서 / 라인 <span class="req">*</span></label>
+        <select id="deptSelect" disabled>
+          <option value="">공장을 먼저 선택하세요</option>
+        </select>
+        <p class="hint" id="deptHint"></p>
+      </div>
+      <div class="field">
+        <label>측정자 <span style="color:var(--muted-2);font-weight:600;">(선택)</span></label>
+        <input type="text" id="writerInput" placeholder="이름 입력">
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. 온도/습도 입력 -->
+  <div class="card">
+    <p class="card-title"><span class="num">3</span> 기온 · 습도 입력</p>
+    <p class="card-desc">값을 입력하면 체감온도가 자동으로 계산됩니다.</p>
+    <div class="field-row">
+      <div class="field">
+        <label>기온 <span class="req">*</span></label>
+        <div class="unit-input">
+          <input type="number" id="tempInput" placeholder="예: 33" step="0.1" inputmode="decimal">
+          <span class="unit">°C</span>
+        </div>
+        <p class="hint" id="tempHint">유효 범위: 25 ~ 40°C (범위를 벗어나도 계산은 됩니다)</p>
+      </div>
+      <div class="field">
+        <label>상대습도 <span class="req">*</span></label>
+        <div class="unit-input">
+          <input type="number" id="humidInput" placeholder="예: 59" step="1" inputmode="decimal">
+          <span class="unit">%</span>
+        </div>
+        <p class="hint" id="humidHint">유효 범위: 25 ~ 100%</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. 결과 -->
+  <div class="card result-card">
+    <p class="card-title"><span class="num">4</span> 체감온도 결과</p>
+    <div class="result-top">
+      <div>
+        <p class="felt-label">체감온도</p>
+        <p class="felt-number placeholder" id="feltNumber">-- <span class="deg">°C</span></p>
+      </div>
+      <div class="chips">
+        <div class="chip">
+          <div class="chip-label">실제 기온</div>
+          <div class="chip-value" id="chipTemp">--°C</div>
+        </div>
+        <div class="chip">
+          <div class="chip-label">기온과의 차이</div>
+          <div class="chip-value" id="chipDiff">--°C</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="gauge-wrap">
+      <div class="gauge-track"><div class="gauge-pointer" id="gaugePointer" style="left:0%"></div></div>
+      <div class="gauge-ticks"><span>20°</span><span>31°</span><span>33°</span><span>38°</span><span>45°+</span></div>
+    </div>
+
+    <div class="banner stage-empty" id="stageBanner">
+      <span class="dot" style="background:var(--muted-2);"></span>
+      온도와 습도를 입력하면 단계가 표시됩니다.
+    </div>
+
     <div class="stage-grid">
-      <div class="stage-box interest">
+      <div class="stage-box interest" id="boxInterest">
         <p class="s-title">관심</p>
         <p class="s-range">31°C 미만</p>
         <p class="s-desc">야외 활동 모니터링</p>
       </div>
-      <div class="stage-box caution">
+      <div class="stage-box caution" id="boxCaution">
         <p class="s-title">주의</p>
         <p class="s-range">31 ~ 32°C</p>
         <p class="s-desc">장시간 야외활동 자제, 규칙적 수분 섭취</p>
       </div>
-      <div class="stage-box warning">
+      <div class="stage-box warning" id="boxWarning">
         <p class="s-title">경고</p>
         <p class="s-range">33 ~ 37°C</p>
         <p class="s-desc">야외활동 자제, 충분한 휴식 확보</p>
       </div>
-      <div class="stage-box danger">
+      <div class="stage-box danger" id="boxDanger">
         <p class="s-title">위험</p>
         <p class="s-range">38°C 이상</p>
         <p class="s-desc">실외 작업 중단, 즉시 시원한 곳 대피</p>
       </div>
     </div>
+
     <div style="margin-top:18px;">
       <button class="toggle-btn" id="refToggleBtn" type="button">
-        <span>📋 기온 × 습도 체감온도 산출표 보기</span>
+        <span>📋 안전보건공단 체감온도 산출표 (기온 × 습도) 보기</span>
         <span class="chev">▾</span>
       </button>
       <div class="ref-table-wrap" id="refTableWrap"></div>
     </div>
   </div>
 
-  <!-- 4. 측정 기록 -->
+  <!-- 5. 조치사항 (31도 이상일 때만 표시) -->
+  <div class="card action-card" id="actionCard">
+    <p class="card-title"><span class="num">5</span> 조치사항 확인</p>
+    <div class="action-alert" id="actionAlertText">체감온도 31°C 이상입니다. 실제 실시한 조치사항을 1개 이상 선택해 기록하세요.</div>
+    <div class="action-list" id="actionList">
+      <label class="action-item"><input type="checkbox" value="냉방·통풍 또는 그늘·차양 등 온열환경 개선"><span class="a-text"><span class="badge-required">필수군</span>냉방·통풍 또는 그늘·차양 등 온열환경 개선</span></label>
+      <label class="action-item"><input type="checkbox" value="작업시간대 조정 또는 폭염시간대 작업 단축"><span class="a-text"><span class="badge-required">필수군</span>작업시간대 조정 또는 폭염시간대 작업 단축</span></label>
+      <label class="action-item"><input type="checkbox" value="적절한 휴식시간 부여"><span class="a-text"><span class="badge-required">필수군</span>적절한 휴식시간 부여</span></label>
+      <label class="action-item"><input type="checkbox" value="시원하고 깨끗한 물 준비·제공"><span class="a-text">시원하고 깨끗한 물 준비·제공</span></label>
+      <label class="action-item"><input type="checkbox" value="민감군 사전 확인 및 상태 확인"><span class="a-text">민감군 사전 확인 및 상태 확인</span></label>
+      <label class="action-item"><input type="checkbox" value="매시간 15분 이상 휴식"><span class="a-text"><span class="badge-required">필수군</span>매시간 15분 이상 휴식</span></label>
+      <label class="action-item"><input type="checkbox" value="오후 2시~5시 옥외작업 중지"><span class="a-text">오후 2시~5시 옥외작업 중지</span></label>
+      <label class="action-item"><input type="checkbox" value="민감군 옥외작업 중지"><span class="a-text">민감군 옥외작업 중지</span></label>
+      <label class="action-item"><input type="checkbox" value="아이스조끼·아이스팩 등 보냉장구 준비"><span class="a-text"><span class="badge-required">필수군</span>아이스조끼·아이스팩 등 보냉장구 준비</span></label>
+    </div>
+    <div class="note-field">
+      <label style="display:block;font-size:12.5px;font-weight:700;color:var(--muted);margin-bottom:6px;">특이사항 · 추가 조치</label>
+      <textarea id="noteInput" placeholder="추가로 기록할 내용이 있다면 입력하세요 (선택)"></textarea>
+    </div>
+  </div>
+
+  <!-- 저장 버튼 -->
+  <div class="save-row">
+    <button class="btn btn-primary btn-lg" id="saveBtn" type="button">✓ 현재 값 저장</button>
+    <button class="btn btn-outline btn-lg" id="resetBtn" type="button" style="flex:0 0 auto;min-width:120px;">초기화</button>
+  </div>
+  <p class="status-line error" id="saveError" style="text-align:center;margin-top:8px;"></p>
+
+  <!-- 6. 측정 기록 -->
   <div class="card">
     <div class="records-head">
-      <p class="card-title" style="margin:0;"><span class="num">4</span> 측정 기록 <span class="records-count" id="recordsCount">(0건)</span></p>
+      <p class="card-title" style="margin:0;"><span class="num">6</span> 측정 기록 <span class="records-count" id="recordsCount">(0건)</span></p>
       <div class="records-actions">
         <button class="btn btn-primary" id="exportBtn" type="button">📥 엑셀 내보내기</button>
         <button class="btn btn-danger-outline" id="clearAllBtn" type="button">🗑 전체 삭제</button>
@@ -398,7 +506,7 @@
       </table>
     </div>
     <div class="empty-state" id="emptyState">저장된 기록이 없습니다.</div>
-    <p class="persist-note">※ 기록은 <strong>이 브라우저(이 기기)에만</strong> 저장됩니다. 다른 PC·휴대폰과 자동으로 합쳐지지 않으니, 측정이 끝나면 <strong>엑셀 내보내기</strong>로 주기적으로 백업하고 담당자에게 취합해 전달하세요.</p>
+    <p class="persist-note">※ 기록은 <strong>이 브라우저(이 기기)에만</strong> 저장됩니다. 다른 PC·휴대폰과 자동으로 합쳐지지 않으니, 부서별 측정이 끝나면 <strong>엑셀 내보내기</strong>로 주기적으로 백업하고 담당자에게 취합해 전달하세요.</p>
   </div>
 
   <div class="footer">
@@ -412,42 +520,39 @@
 (function(){
   "use strict";
 
-  /* ============ 0. 유틸 ============ */
-  function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
-  function sanitizeId(s){ return String(s).replace(/[^a-zA-Z0-9가-힣]/g, '_'); }
-  function escapeHtml(s){
-    return String(s).replace(/[&<>"']/g, function(c){
-      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
-    });
-  }
-  function showToast(msg){
-    var toast = document.getElementById('toast');
-    toast.textContent = msg;
-    toast.classList.add('show');
-    clearTimeout(showToast._t);
-    showToast._t = setTimeout(function(){ toast.classList.remove('show'); }, 2600);
-  }
-
-  /* ============ 1. 공장 · 부서 매핑 ============ */
+  /* ============ 1. 부서 매핑 ============ */
   var departmentMap = {
     "영천공장": ["1","2","3","4","5","6","7"],
     "1공장": ["자재","조립","도장","프레스","금형"],
     "2공장": ["도장","프레스"]
   };
 
-  var DEFAULT_ACTION_TEXT = '2시간마다 휴식시간 부여';
+  var plantSelect = document.getElementById('plantSelect');
+  var deptSelect = document.getElementById('deptSelect');
+  var deptHint = document.getElementById('deptHint');
 
-  var EXTRA_ACTIONS = [
-    {text:'냉방·통풍 또는 그늘·차양 등 온열환경 개선', required:true},
-    {text:'작업시간대 조정 또는 폭염시간대 작업 단축', required:true},
-    {text:'적절한 휴식시간 부여', required:true},
-    {text:'시원하고 깨끗한 물 준비·제공', required:false},
-    {text:'민감군 사전 확인 및 상태 확인', required:false},
-    {text:'매시간 15분 이상 휴식', required:true},
-    {text:'오후 2시~5시 옥외작업 중지', required:false},
-    {text:'민감군 옥외작업 중지', required:false},
-    {text:'아이스조끼·아이스팩 등 보냉장구 준비', required:true}
-  ];
+  plantSelect.addEventListener('change', function(){
+    var plant = plantSelect.value;
+    deptSelect.innerHTML = '';
+    if(!plant){
+      deptSelect.disabled = true;
+      var opt0 = document.createElement('option');
+      opt0.value=''; opt0.textContent='공장을 먼저 선택하세요';
+      deptSelect.appendChild(opt0);
+      deptHint.textContent = '';
+      return;
+    }
+    deptSelect.disabled = false;
+    var placeholder = document.createElement('option');
+    placeholder.value=''; placeholder.textContent='선택하세요';
+    deptSelect.appendChild(placeholder);
+    departmentMap[plant].forEach(function(d){
+      var o = document.createElement('option');
+      o.value = d; o.textContent = d;
+      deptSelect.appendChild(o);
+    });
+    deptHint.textContent = (plant === '영천공장') ? '※ 영천공장 부서명은 추후 확정 예정 · 우선 번호로 구분합니다' : '';
+  });
 
   /* ============ 2. 체감온도 계산 (기상청 · KOSHA 여름철 체감온도 산출식) ============ */
   // 출처: 기상청 2022.6.2 개정 산출식 / 습구온도는 Stull(2011) 근사식 사용
@@ -469,312 +574,105 @@
     if(f >= 31) return {key:'caution', label:'주의'};
     return {key:'interest', label:'관심'};
   }
+  var stageMsg = {
+    interest:'관심 — 야외 활동을 모니터링하세요.',
+    caution:'주의 — 장시간 야외활동을 자제하고 규칙적으로 수분을 섭취하세요.',
+    warning:'경고 — 야외활동을 자제하고 충분한 휴식을 확보하세요.',
+    danger:'위험 — 실외 작업을 중단하고 즉시 시원한 곳으로 대피하세요.'
+  };
 
-  /* ============ 3. 측정자 (최초 1회 등록) ============ */
-  var WRITER_KEY = 'gyt_writer_name_v1';
-  var writerBar = document.getElementById('writerBar');
+  var tempInput = document.getElementById('tempInput');
+  var humidInput = document.getElementById('humidInput');
+  var tempHint = document.getElementById('tempHint');
+  var humidHint = document.getElementById('humidHint');
+  var feltNumber = document.getElementById('feltNumber');
+  var chipTemp = document.getElementById('chipTemp');
+  var chipDiff = document.getElementById('chipDiff');
+  var stageBanner = document.getElementById('stageBanner');
+  var gaugePointer = document.getElementById('gaugePointer');
+  var actionCard = document.getElementById('actionCard');
+  var actionAlertText = document.getElementById('actionAlertText');
 
-  function getWriter(){ return localStorage.getItem(WRITER_KEY) || ''; }
-  function setWriter(name){ localStorage.setItem(WRITER_KEY, name); }
+  var stageBoxes = {
+    interest: document.getElementById('boxInterest'),
+    caution: document.getElementById('boxCaution'),
+    warning: document.getElementById('boxWarning'),
+    danger: document.getElementById('boxDanger')
+  };
 
-  function renderWriterBar(){
-    var w = getWriter();
-    if(w){
-      writerBar.className = 'writer-bar locked';
-      writerBar.innerHTML =
-        '<div class="writer-name-display">👤 측정자: ' + escapeHtml(w) + '</div>' +
-        '<button class="btn btn-outline" id="writerChangeBtn" type="button">변경</button>';
-      document.getElementById('writerChangeBtn').addEventListener('click', function(){ showWriterEdit(w); });
-    } else {
-      showWriterEdit('');
-    }
-  }
-  function showWriterEdit(prefill){
-    writerBar.className = 'writer-bar';
-    writerBar.innerHTML =
-      '<div class="writer-edit-row">' +
-        '<input type="text" id="writerInput" placeholder="측정자 이름 입력" value="' + escapeHtml(prefill) + '">' +
-        '<button class="btn btn-primary" id="writerConfirmBtn" type="button">확인</button>' +
-      '</div>';
-    var input = document.getElementById('writerInput');
-    document.getElementById('writerConfirmBtn').addEventListener('click', confirmWriter);
-    input.addEventListener('keydown', function(e){ if(e.key === 'Enter') confirmWriter(); });
-    input.focus();
-  }
-  function confirmWriter(){
-    var input = document.getElementById('writerInput');
-    var val = input.value.trim();
-    if(!val){ input.focus(); return; }
-    setWriter(val);
-    renderWriterBar();
-    showToast('✓ 측정자가 "' + val + '"(으)로 등록되었습니다.');
-  }
+  var currentResult = null; // {temp, humid, felt, stage}
 
-  /* ============ 4. 부서 행 렌더링 ============ */
-  function buildExtraActionsHTML(){
-    return EXTRA_ACTIONS.map(function(a){
-      return '<label class="extra-action-item"><input type="checkbox" value="' + escapeHtml(a.text) + '">' +
-        (a.required ? '<span class="badge-required">필수군</span>' : '') +
-        '<span>' + escapeHtml(a.text) + '</span></label>';
-    }).join('');
-  }
+  function clamp(v,min,max){ return Math.max(min, Math.min(max, v)); }
 
-  function buildRow(plant, dept){
-    var rid = 'row_' + sanitizeId(plant) + '_' + sanitizeId(dept);
-    return (
-      '<div class="dept-row" id="' + rid + '" data-plant="' + escapeHtml(plant) + '" data-dept="' + escapeHtml(dept) + '">' +
-        '<div class="dept-name">' + escapeHtml(dept) + '</div>' +
-        '<div class="row-inputs">' +
-          '<div class="row-field"><input type="number" class="row-temp" step="0.1" inputmode="decimal" placeholder="기온"><span class="unit">°C</span></div>' +
-          '<div class="row-field"><input type="number" class="row-humid" step="1" inputmode="decimal" placeholder="습도"><span class="unit">%</span></div>' +
-        '</div>' +
-        '<div class="row-result"><span class="rr-empty">입력 대기</span></div>' +
-        '<div class="row-action">' +
-          '<div class="row-action-top">' +
-            '<label class="action-chip-default"><input type="checkbox" class="default-cb" checked><span>' + DEFAULT_ACTION_TEXT + '</span><span class="auto-badge">자동 적용</span></label>' +
-            '<button type="button" class="more-actions-btn">+ 추가 조치 선택</button>' +
-          '</div>' +
-          '<div class="extra-actions-panel hidden">' +
-            buildExtraActionsHTML() +
-            '<div class="row-note-field"><input type="text" class="row-note" placeholder="특이사항 · 추가 조치 (선택)"></div>' +
-          '</div>' +
-        '</div>' +
-      '</div>'
-    );
-  }
+  function calculate(){
+    var tVal = tempInput.value.trim();
+    var hVal = humidInput.value.trim();
 
-  function buildDeptPanels(){
-    var container = document.getElementById('deptPanels');
-    var html = '';
-    var plants = Object.keys(departmentMap);
-    plants.forEach(function(plant, idx){
-      var hint = (plant === '영천공장')
-        ? '<p class="hint" style="margin-bottom:12px;">※ 영천공장 부서명은 추후 확정 예정 · 우선 번호로 구분합니다</p>'
-        : '';
-      html += '<div class="dept-panel' + (idx === 0 ? ' active' : '') + '" data-plant="' + escapeHtml(plant) + '">' +
-        hint + departmentMap[plant].map(function(d){ return buildRow(plant, d); }).join('') +
-      '</div>';
-    });
-    container.innerHTML = html;
-  }
-
-  function updateRow(row){
-    var tVal = row.querySelector('.row-temp').value.trim();
-    var hVal = row.querySelector('.row-humid').value.trim();
-    var resultEl = row.querySelector('.row-result');
-    row.classList.remove('filled','stage-caution','stage-warning','stage-danger','show-action');
+    tempHint.classList.remove('warn');
+    humidHint.classList.remove('warn');
+    tempHint.textContent = '유효 범위: 25 ~ 40°C (범위를 벗어나도 계산은 됩니다)';
+    humidHint.textContent = '유효 범위: 25 ~ 100%';
 
     if(tVal === '' || hVal === '' || isNaN(tVal) || isNaN(hVal)){
-      resultEl.innerHTML = '<span class="rr-empty">입력 대기</span>';
-      row.dataset.felt = '';
+      currentResult = null;
+      feltNumber.innerHTML = '-- <span class="deg">°C</span>';
+      feltNumber.classList.add('placeholder');
+      chipTemp.textContent = '--°C';
+      chipDiff.textContent = '--°C';
+      gaugePointer.style.left = '0%';
+      stageBanner.className = 'banner stage-empty';
+      stageBanner.innerHTML = '<span class="dot" style="background:var(--muted-2);"></span>온도와 습도를 입력하면 단계가 표시됩니다.';
+      Object.keys(stageBoxes).forEach(function(k){ stageBoxes[k].classList.remove('active'); });
+      actionCard.classList.remove('show');
       return;
     }
+
     var t = parseFloat(tVal);
     var h = clamp(parseFloat(hVal), 0, 100);
+
+    if(t < 25 || t > 40){ tempHint.classList.add('warn'); tempHint.textContent = '⚠ 공식 유효 범위(25~40°C)를 벗어났습니다. 참고용으로만 사용하세요.'; }
+    if(parseFloat(hVal) < 25 || parseFloat(hVal) > 100){ humidHint.classList.add('warn'); humidHint.textContent = '⚠ 공식 유효 범위(25~100%)를 벗어났습니다. 참고용으로만 사용하세요.'; }
+
     var felt = feelsLike(t, h);
     var stage = getStage(felt);
+    var diff = felt - t;
 
-    row.dataset.felt = felt.toFixed(1);
-    row.dataset.stageKey = stage.key;
-    row.dataset.stageLabel = stage.label;
+    currentResult = {temp:t, humid:h, felt:felt, stage:stage.label, stageKey:stage.key};
 
-    resultEl.innerHTML = '<span class="rr-felt">' + felt.toFixed(1) + '°C</span><span class="stage-tag ' + stage.key + '">' + stage.label + '</span>';
-    row.classList.add('filled');
-    if(stage.key !== 'interest'){ row.classList.add('stage-' + stage.key); }
-    if(felt >= 31){ row.classList.add('show-action'); }
+    feltNumber.classList.remove('placeholder');
+    feltNumber.innerHTML = felt.toFixed(1) + ' <span class="deg">°C</span>';
+    chipTemp.textContent = t.toFixed(1) + '°C';
+    chipDiff.textContent = (diff >= 0 ? '+' : '') + diff.toFixed(1) + '°C';
+
+    var pct = clamp(((felt - 20) / (45 - 20)) * 100, 0, 100);
+    gaugePointer.style.left = pct + '%';
+
+    stageBanner.className = 'banner stage-' + stage.key;
+    stageBanner.innerHTML = '<span class="dot"></span>' + stageMsg[stage.key];
+
+    Object.keys(stageBoxes).forEach(function(k){
+      stageBoxes[k].classList.toggle('active', k === stage.key);
+    });
+
+    if(felt >= 31){
+      actionCard.classList.add('show');
+      actionAlertText.textContent = '체감온도 ' + felt.toFixed(1) + '°C 입니다 (31°C 이상). 실제 실시한 조치사항을 1개 이상 선택해 기록하세요.';
+    } else {
+      actionCard.classList.remove('show');
+    }
   }
 
-  function updateTabBadges(){
-    document.querySelectorAll('.dept-panel').forEach(function(panel){
-      var plant = panel.getAttribute('data-plant');
-      var count = panel.querySelectorAll('.dept-row.filled').length;
-      var tab = document.querySelector('.plant-tab[data-plant="' + plant.replace(/"/g,'') + '"]');
-      if(tab){ tab.textContent = plant + (count > 0 ? ' (' + count + ')' : ''); }
-    });
-  }
+  tempInput.addEventListener('input', calculate);
+  humidInput.addEventListener('input', calculate);
 
-  var panelSaveInfo = document.getElementById('panelSaveInfo');
-  var panelSaveBtn = document.getElementById('panelSaveBtn');
-  var saveError = document.getElementById('saveError');
-
-  function updateSaveBar(){
-    var panel = document.querySelector('.dept-panel.active');
-    if(!panel){ panelSaveInfo.textContent = ''; panelSaveBtn.disabled = true; return; }
-    var plant = panel.getAttribute('data-plant');
-    var count = panel.querySelectorAll('.dept-row.filled').length;
-    panelSaveInfo.innerHTML = count > 0
-      ? (escapeHtml(plant) + ' · <strong>' + count + '개 부서</strong> 입력됨 · 저장 대기중')
-      : (escapeHtml(plant) + ' · 기온·습도를 입력하세요');
-    panelSaveBtn.textContent = '✓ ' + plant + ' 전체 저장' + (count > 0 ? ' (' + count + ')' : '');
-    panelSaveBtn.disabled = count === 0;
-  }
-
-  var deptPanels = document.getElementById('deptPanels');
-
-  deptPanels.addEventListener('input', function(e){
-    if(e.target.classList.contains('row-temp') || e.target.classList.contains('row-humid')){
-      updateRow(e.target.closest('.dept-row'));
-      updateSaveBar();
-      updateTabBadges();
+  /* action item highlight */
+  document.getElementById('actionList').addEventListener('change', function(e){
+    if(e.target.tagName === 'INPUT'){
+      e.target.closest('.action-item').classList.toggle('checked', e.target.checked);
     }
   });
 
-  deptPanels.addEventListener('click', function(e){
-    if(e.target.classList.contains('more-actions-btn')){
-      var wrap = e.target.closest('.row-action');
-      var panel = wrap.querySelector('.extra-actions-panel');
-      var hidden = panel.classList.toggle('hidden');
-      e.target.textContent = hidden ? '+ 추가 조치 선택' : '− 추가 조치 닫기';
-    }
-  });
-
-  deptPanels.addEventListener('change', function(e){
-    if(e.target.classList.contains('default-cb')){
-      e.target.closest('.action-chip-default').classList.toggle('off', !e.target.checked);
-    } else if(e.target.type === 'checkbox' && e.target.closest('.extra-action-item')){
-      e.target.closest('.extra-action-item').classList.toggle('checked', e.target.checked);
-    }
-  });
-
-  /* ============ 5. 공장 탭 전환 ============ */
-  document.querySelectorAll('.plant-tab').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      var plant = btn.getAttribute('data-plant');
-      document.querySelectorAll('.plant-tab').forEach(function(b){
-        b.classList.toggle('active', b === btn);
-      });
-      document.querySelectorAll('.dept-panel').forEach(function(p){
-        p.classList.toggle('active', p.getAttribute('data-plant') === plant);
-      });
-      saveError.textContent = '';
-      updateSaveBar();
-    });
-  });
-
-  /* ============ 6. 현재 탭 초기화 ============ */
-  document.getElementById('panelResetBtn').addEventListener('click', function(){
-    var panel = document.querySelector('.dept-panel.active');
-    if(!panel) return;
-    panel.querySelectorAll('.dept-row').forEach(function(row){
-      row.querySelector('.row-temp').value = '';
-      row.querySelector('.row-humid').value = '';
-      var defaultCb = row.querySelector('.default-cb');
-      defaultCb.checked = true;
-      defaultCb.closest('.action-chip-default').classList.remove('off');
-      row.querySelectorAll('.extra-action-item input:checked').forEach(function(cb){
-        cb.checked = false;
-        cb.closest('.extra-action-item').classList.remove('checked');
-      });
-      var note = row.querySelector('.row-note');
-      if(note) note.value = '';
-      var extraPanel = row.querySelector('.extra-actions-panel');
-      if(!extraPanel.classList.contains('hidden')){
-        extraPanel.classList.add('hidden');
-        row.querySelector('.more-actions-btn').textContent = '+ 추가 조치 선택';
-      }
-      updateRow(row);
-    });
-    saveError.textContent = '';
-    updateSaveBar();
-    updateTabBadges();
-    showToast('현재 탭의 입력값이 초기화되었습니다.');
-  });
-
-  /* ============ 7. 전체 저장 ============ */
-  panelSaveBtn.addEventListener('click', function(){
-    saveError.textContent = '';
-    var writer = getWriter();
-    if(!writer){
-      saveError.textContent = '먼저 측정자를 등록해주세요.';
-      writerBar.scrollIntoView({behavior:'smooth', block:'center'});
-      return;
-    }
-    var panel = document.querySelector('.dept-panel.active');
-    if(!panel) return;
-    var plant = panel.getAttribute('data-plant');
-    var rows = Array.prototype.slice.call(panel.querySelectorAll('.dept-row.filled'));
-    if(rows.length === 0){
-      saveError.textContent = '입력된 부서가 없습니다. 기온과 습도를 입력해주세요.';
-      return;
-    }
-
-    var now = new Date();
-    var savedCount = 0;
-    var skipped = [];
-
-    rows.forEach(function(row){
-      var dept = row.getAttribute('data-dept');
-      var felt = parseFloat(row.dataset.felt);
-      var stageLabel = row.dataset.stageLabel;
-      var t = parseFloat(row.querySelector('.row-temp').value);
-      var h = parseFloat(row.querySelector('.row-humid').value);
-
-      var actions = [];
-      var defaultCb = row.querySelector('.default-cb');
-      if(defaultCb.checked) actions.push(DEFAULT_ACTION_TEXT);
-      row.querySelectorAll('.extra-action-item input:checked').forEach(function(cb){ actions.push(cb.value); });
-
-      if(felt >= 31 && actions.length === 0){
-        skipped.push(dept);
-        return;
-      }
-
-      var noteEl = row.querySelector('.row-note');
-      var note = noteEl ? noteEl.value.trim() : '';
-
-      var rec = {
-        id: now.getTime() + '_' + sanitizeId(dept) + '_' + Math.random().toString(36).slice(2,7),
-        createdAt: now.getTime(),
-        displayTime: now.toLocaleString('ko-KR', {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}),
-        plant: plant,
-        dept: dept,
-        writer: writer,
-        temp: t,
-        humid: h,
-        felt: felt,
-        stage: stageLabel,
-        actions: actions,
-        note: note
-      };
-      records.push(rec);
-      savedCount++;
-
-      // 저장된 행만 다음 측정을 위해 초기화
-      row.querySelector('.row-temp').value = '';
-      row.querySelector('.row-humid').value = '';
-      defaultCb.checked = true;
-      defaultCb.closest('.action-chip-default').classList.remove('off');
-      row.querySelectorAll('.extra-action-item input:checked').forEach(function(cb){
-        cb.checked = false;
-        cb.closest('.extra-action-item').classList.remove('checked');
-      });
-      if(noteEl) noteEl.value = '';
-      var extraPanel = row.querySelector('.extra-actions-panel');
-      if(!extraPanel.classList.contains('hidden')){
-        extraPanel.classList.add('hidden');
-        row.querySelector('.more-actions-btn').textContent = '+ 추가 조치 선택';
-      }
-      updateRow(row);
-    });
-
-    if(savedCount > 0){
-      saveRecordsToStorage();
-      renderRecords();
-    }
-    updateSaveBar();
-    updateTabBadges();
-
-    if(savedCount > 0 && skipped.length === 0){
-      showToast('✓ ' + plant + ' ' + savedCount + '개 부서 저장 완료');
-    } else if(savedCount > 0 && skipped.length > 0){
-      showToast('✓ ' + savedCount + '개 부서 저장 완료 · ⚠ ' + skipped.join(', ') + ' 조치 미선택으로 제외');
-      saveError.textContent = skipped.join(', ') + '은(는) 체감온도 31°C 이상이지만 조치사항이 선택되지 않아 저장되지 않았습니다.';
-    } else if(savedCount === 0 && skipped.length > 0){
-      saveError.textContent = '체감온도 31°C 이상 부서(' + skipped.join(', ') + ')는 조치사항을 1개 이상 선택해야 저장됩니다.';
-    }
-  });
-
-  /* ============ 8. 참고표 (기온 x 습도) 동적 생성 ============ */
+  /* ============ 3. 참고표 (기온 x 습도) 동적 생성 ============ */
   var refToggleBtn = document.getElementById('refToggleBtn');
   var refTableWrap = document.getElementById('refTableWrap');
   var refBuilt = false;
@@ -804,28 +702,28 @@
     refTableWrap.innerHTML = html;
   }
 
-  /* ============ 9. 날씨 자동 불러오기 (Open-Meteo) ============ */
+  /* ============ 4. 날씨 자동 불러오기 (Open-Meteo) ============ */
   var weatherStatus = document.getElementById('weatherStatus');
   var cityInput = document.getElementById('cityInput');
   var citySearchBtn = document.getElementById('citySearchBtn');
   var myLocBtn = document.getElementById('myLocBtn');
-  var weatherApplyRow = document.getElementById('weatherApplyRow');
-  var weatherApplyBtn = document.getElementById('weatherApplyBtn');
-  var lastWeather = null;
+
+  function applyWeather(temp, humid, label){
+    tempInput.value = Math.round(temp*10)/10;
+    humidInput.value = Math.round(humid);
+    calculate();
+    weatherStatus.textContent = '✓ ' + label + ' 날씨 적용됨 (기온 ' + temp.toFixed(1) + '°C, 습도 ' + Math.round(humid) + '%) · 필요시 아래 값을 직접 수정하세요.';
+    weatherStatus.classList.add('ok');
+  }
 
   function fetchWeatherByCoords(lat, lon, label){
     weatherStatus.textContent = '날씨 정보를 불러오는 중...';
     weatherStatus.classList.remove('ok','error');
-    weatherApplyRow.classList.remove('show');
     fetch('https://api.open-meteo.com/v1/forecast?latitude=' + lat + '&longitude=' + lon + '&current=temperature_2m,relative_humidity_2m')
       .then(function(r){ return r.json(); })
       .then(function(data){
         if(data && data.current){
-          lastWeather = {temp:data.current.temperature_2m, humid:data.current.relative_humidity_2m, label:label};
-          weatherStatus.textContent = '✓ ' + label + ' 날씨 확인됨 (기온 ' + lastWeather.temp.toFixed(1) + '°C, 습도 ' + Math.round(lastWeather.humid) + '%)';
-          weatherStatus.classList.add('ok');
-          weatherApplyBtn.textContent = '↳ 현재 탭 빈 칸에 일괄 적용 (' + lastWeather.temp.toFixed(1) + '°C · ' + Math.round(lastWeather.humid) + '%)';
-          weatherApplyRow.classList.add('show');
+          applyWeather(data.current.temperature_2m, data.current.relative_humidity_2m, label);
         } else {
           throw new Error('no data');
         }
@@ -841,7 +739,6 @@
     if(!q){ return; }
     weatherStatus.textContent = '"' + q + '" 검색 중...';
     weatherStatus.classList.remove('ok','error');
-    weatherApplyRow.classList.remove('show');
     fetch('https://geocoding-api.open-meteo.com/v1/search?name=' + encodeURIComponent(q) + '&count=1&language=ko')
       .then(function(r){ return r.json(); })
       .then(function(data){
@@ -871,7 +768,6 @@
     }
     weatherStatus.textContent = '내 위치를 확인하는 중...';
     weatherStatus.classList.remove('ok','error');
-    weatherApplyRow.classList.remove('show');
     navigator.geolocation.getCurrentPosition(function(pos){
       fetchWeatherByCoords(pos.coords.latitude, pos.coords.longitude, '내 위치');
     }, function(){
@@ -880,27 +776,7 @@
     });
   });
 
-  weatherApplyBtn.addEventListener('click', function(){
-    if(!lastWeather) return;
-    var panel = document.querySelector('.dept-panel.active');
-    if(!panel) return;
-    var count = 0;
-    panel.querySelectorAll('.dept-row').forEach(function(row){
-      var tIn = row.querySelector('.row-temp');
-      var hIn = row.querySelector('.row-humid');
-      if(tIn.value.trim() === '' && hIn.value.trim() === ''){
-        tIn.value = Math.round(lastWeather.temp * 10) / 10;
-        hIn.value = Math.round(lastWeather.humid);
-        updateRow(row);
-        count++;
-      }
-    });
-    updateSaveBar();
-    updateTabBadges();
-    showToast(count > 0 ? ('✓ ' + count + '개 부서에 날씨 값을 적용했습니다.') : '이미 모든 부서에 값이 입력되어 있습니다.');
-  });
-
-  /* ============ 10. 기록 저장 / 불러오기 (localStorage) ============ */
+  /* ============ 5. 기록 저장 / 불러오기 (localStorage) ============ */
   var STORAGE_KEY = 'gyt_heatindex_records_v1';
   var records = [];
 
@@ -946,13 +822,13 @@
     var sorted = records.slice().sort(function(a,b){ return b.createdAt - a.createdAt; });
     sorted.forEach(function(rec){
       var tr = document.createElement('tr');
-      var actionsStr = (rec.actions && rec.actions.length) ? escapeHtml(rec.actions.join(', ')) : '<span class="cell-muted">-</span>';
-      var noteStr = rec.note ? escapeHtml(rec.note) : '<span class="cell-muted">-</span>';
-      var writerStr = rec.writer ? escapeHtml(rec.writer) : '<span class="cell-muted">-</span>';
+      var actionsStr = (rec.actions && rec.actions.length) ? rec.actions.join(', ') : '<span class="cell-muted">-</span>';
+      var noteStr = rec.note ? rec.note : '<span class="cell-muted">-</span>';
+      var writerStr = rec.writer ? rec.writer : '<span class="cell-muted">-</span>';
       tr.innerHTML =
         '<td>' + rec.displayTime + '</td>' +
-        '<td>' + escapeHtml(rec.plant) + '</td>' +
-        '<td>' + escapeHtml(rec.dept) + '</td>' +
+        '<td>' + rec.plant + '</td>' +
+        '<td>' + rec.dept + '</td>' +
         '<td>' + rec.temp.toFixed(1) + '°C</td>' +
         '<td>' + rec.humid + '%</td>' +
         '<td><strong>' + rec.felt.toFixed(1) + '°C</strong></td>' +
@@ -977,7 +853,77 @@
     }
   });
 
-  /* ============ 11. 엑셀 내보내기 / 전체 삭제 ============ */
+  /* ============ 6. 저장하기 ============ */
+  var saveBtn = document.getElementById('saveBtn');
+  var resetBtn = document.getElementById('resetBtn');
+  var saveError = document.getElementById('saveError');
+  var writerInput = document.getElementById('writerInput');
+  var noteInput = document.getElementById('noteInput');
+  var toast = document.getElementById('toast');
+
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(function(){ toast.classList.remove('show'); }, 2200);
+  }
+
+  saveBtn.addEventListener('click', function(){
+    saveError.textContent = '';
+
+    if(!plantSelect.value){ saveError.textContent = '공장을 선택해주세요.'; plantSelect.focus(); return; }
+    if(!deptSelect.value){ saveError.textContent = '부서를 선택해주세요.'; deptSelect.focus(); return; }
+    if(!currentResult){ saveError.textContent = '기온과 습도를 입력해주세요.'; tempInput.focus(); return; }
+
+    var checkedBoxes = Array.prototype.slice.call(document.querySelectorAll('#actionList input:checked'));
+    if(currentResult.felt >= 31 && checkedBoxes.length === 0){
+      saveError.textContent = '체감온도 31°C 이상입니다. 조치사항을 1개 이상 선택해주세요.';
+      document.getElementById('actionCard').scrollIntoView({behavior:'smooth', block:'center'});
+      return;
+    }
+
+    var now = new Date();
+    var rec = {
+      id: now.getTime() + '_' + Math.random().toString(36).slice(2,7),
+      createdAt: now.getTime(),
+      displayTime: now.toLocaleString('ko-KR', {year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}),
+      plant: plantSelect.value,
+      dept: deptSelect.value,
+      writer: writerInput.value.trim(),
+      temp: currentResult.temp,
+      humid: currentResult.humid,
+      felt: currentResult.felt,
+      stage: currentResult.stage,
+      actions: checkedBoxes.map(function(b){ return b.value; }),
+      note: noteInput.value.trim()
+    };
+
+    records.push(rec);
+    saveRecordsToStorage();
+    renderRecords();
+
+    // 다음 입력을 위해 조치/특이사항만 초기화 (같은 조건에서 다른 부서를 이어서 기록하기 쉽도록 온도/습도는 유지)
+    checkedBoxes.forEach(function(b){ b.checked = false; b.closest('.action-item').classList.remove('checked'); });
+    noteInput.value = '';
+    deptSelect.focus();
+
+    showToast('✓ ' + rec.plant + ' · ' + rec.dept + ' 기록이 저장되었습니다.');
+  });
+
+  resetBtn.addEventListener('click', function(){
+    plantSelect.value = '';
+    plantSelect.dispatchEvent(new Event('change'));
+    writerInput.value = '';
+    tempInput.value = '';
+    humidInput.value = '';
+    noteInput.value = '';
+    document.querySelectorAll('#actionList input:checked').forEach(function(b){
+      b.checked = false; b.closest('.action-item').classList.remove('checked');
+    });
+    saveError.textContent = '';
+    calculate();
+  });
+
+  /* ============ 7. 엑셀 내보내기 ============ */
   document.getElementById('exportBtn').addEventListener('click', function(){
     if(records.length === 0){
       alert('내보낼 기록이 없습니다. 먼저 값을 저장해주세요.');
@@ -1023,11 +969,8 @@
 
   /* ============ 초기화 ============ */
   loadRecords();
-  renderWriterBar();
-  buildDeptPanels();
   renderRecords();
-  updateSaveBar();
-  updateTabBadges();
+  calculate();
 
 })();
 </script>
